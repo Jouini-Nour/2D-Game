@@ -15,16 +15,21 @@ public class Player extends Entity {
 
     GamePanel gamePanel;
     KeyHandler keyH;
+    public final int screenX;
+    public final int screenY;
     public Player( GamePanel gamePanel, KeyHandler keyH) {
         super(100, 100, 4);
         this.gamePanel = gamePanel;
         this.keyH = keyH;
         this.getPlayerImage();
         direction = "down";
+        setDefaultValues(gamePanel);
+        screenX = gamePanel.screenWidth/2 - gamePanel.tileSize/2; 
+        screenY = gamePanel.screenHeight/2 - gamePanel.tileSize/2;
     }
-    public void setDefaultValues() {
-        this.setX(100);
-        this.setY(100);
+    public void setDefaultValues(GamePanel gp){ 
+        this.setX(gp.tileSize*23);
+        this.setY(gp.tileSize*21);
         this.setSpeed(4);
          
     }
@@ -97,7 +102,7 @@ public class Player extends Entity {
                 }
                 break;
         }
-        g2.drawImage(img, getX(), getY(), gamePanel.tileSize, gamePanel.tileSize, null);
+        g2.drawImage(img, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
 
     }
     public void getPlayerImage(){
