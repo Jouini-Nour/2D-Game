@@ -12,8 +12,8 @@ import main.GamePanel;
 
 public class TileManager {
     GamePanel gp;
-    Tile[] tiles;
-    int mapTile[][] ;
+    public Tile[] tiles;
+    public int mapTile[][] ;
     public TileManager(GamePanel gp){
         this.gp = gp;
         tiles = new Tile[20];

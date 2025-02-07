@@ -2,6 +2,7 @@ package Entity;
 
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -26,6 +27,11 @@ public class Player extends Entity {
         setDefaultValues(gamePanel);
         screenX = gamePanel.screenWidth/2 - gamePanel.tileSize/2; 
         screenY = gamePanel.screenHeight/2 - gamePanel.tileSize/2;
+        solidArea = new Rectangle();
+        solidArea.x=8;
+        solidArea.y=16;
+        solidArea.width=32;
+        solidArea.height=32;
     }
     public void setDefaultValues(GamePanel gp){ 
         this.setX(gp.tileSize*23);
@@ -38,20 +44,38 @@ public class Player extends Entity {
         if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed){
             if(keyH.upPressed){
                 direction = "up";
-                this.setY(this.getY() - this.getSpeed());
             }
             else if(keyH.downPressed){
                 direction = "down";
-                this.setY(this.getY() + this.getSpeed());
             }
             else if(keyH.leftPressed){
                 direction = "left";
-                this.setX(this.getX() - this.getSpeed());
             }
             else if(keyH.rightPressed){
                 direction = "right";
-                this.setX(this.getX() + this.getSpeed());
             }
+
+            collisionOn = false;
+            gamePanel.cc.checkTile(this);
+            if(!collisionOn){
+                switch (direction) {
+                    case "up":
+                        this.setY(this.getY() - this.getSpeed());
+                        break;
+                    case "down":
+                        this.setY(this.getY() + this.getSpeed());
+                        break;
+                    case "left":
+                        this.setX(this.getX() - this.getSpeed());
+                        break;
+                    case "right":
+                        this.setX(this.getX() + this.getSpeed());
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             spriteCount++;
             if(spriteCount > 12){
                 if(spriteNum==1){
@@ -61,6 +85,8 @@ public class Player extends Entity {
                 }
                 spriteCount = 0; 
             } 
+
+
         }
 
         
