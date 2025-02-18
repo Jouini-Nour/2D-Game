@@ -18,6 +18,8 @@ public class Player extends Entity {
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
+    int keys = 0;
+
     public Player( GamePanel gamePanel, KeyHandler keyH) {
         super(100, 100, 4);
         this.gamePanel = gamePanel;
@@ -30,6 +32,8 @@ public class Player extends Entity {
         solidArea = new Rectangle();
         solidArea.x=8;
         solidArea.y=16;
+        solidAreaDefaultX=solidArea.x;
+        solidAreaDefaultY=solidArea.y;
         solidArea.width=32;
         solidArea.height=32;
     }
@@ -57,6 +61,10 @@ public class Player extends Entity {
 
             collisionOn = false;
             gamePanel.cc.checkTile(this);
+
+            // check object collision
+            int objIndex = gamePanel.cc.checkObject(this, true);
+            pickupObject(objIndex);
             if(!collisionOn){
                 switch (direction) {
                     case "up":
@@ -88,9 +96,32 @@ public class Player extends Entity {
 
 
         }
+    }
 
-        
-
+    public void pickupObject(int index){
+        if (index!=999){
+            String objName = gamePanel.objs[index].name;
+            switch(objName){
+                case "Key":
+                    keys++;
+                    gamePanel.objs[index] = null;
+                    System.out.println("Keys: "+keys);
+                    break;
+                case "Door":
+                    if(keys>0){
+                        keys--;
+                        gamePanel.objs[index] = null;
+                    }
+                    System.out.println("Keys: "+keys);
+                    break;
+                case "Chest":
+                    if(keys>0){
+                        keys--;
+                        gamePanel.objs[index] = null;
+                    }
+                    break;
+            }
+        }
     }
     public void draw(Graphics2D g2){
         BufferedImage img = null;

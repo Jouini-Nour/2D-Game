@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import Entity.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 
@@ -29,6 +30,7 @@ public class GamePanel extends JPanel implements Runnable{
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     public Player player = new Player(this, keyH);
+    public SuperObject objs[] = new SuperObject[10];
 
     //World Settings
     public final int maxWorldCol = 50; 
@@ -37,6 +39,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int worldHeight = tileSize * maxWorldRow;
 
     public CollisionChecker cc = new CollisionChecker(this);
+    public AssetSetter as = new AssetSetter(this);
 
 
     //Player Position
@@ -49,6 +52,10 @@ public class GamePanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+    }
+    public void setupGame(){
+        as.setObject();
+
     }
 
     public void startGameThread(){
@@ -97,7 +104,18 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
+        
+        //Tile Drawing
         tm.draw(g2);
+
+        //Object Drawing
+        for(int i=0; i<objs.length; i++){
+            if(objs[i]!=null){
+                objs[i].draw(g2, this);
+            }
+        }
+
+        //Player Drawing
         player.draw(g2);
 
         g2.dispose();
